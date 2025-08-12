@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -6,127 +5,98 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { TableVirtuoso, type TableComponents } from 'react-virtuoso';
-import Chance from 'chance';
+import { Typography } from '@mui/material';
 
-interface Data {
-  id: number;
-  firstName: string;
-  lastName: string;
-  age: number;
-  phone: string;
-  state: string;
+// Interfaces genéricas para os dados
+interface GenericData {
+  [key: string]: any;
 }
 
 interface ColumnData {
-  dataKey: keyof Data;
+  dataKey: string;
   label: string;
   numeric?: boolean;
   width?: number;
 }
 
-const chance = new Chance(42);
+// Dados de exemplo para a tabela
+const employees = [
+  { id: 1, razao_social: 'João Silva', cnpj: 'Engenharia', facade_name: 12000 },
+  { id: 2, razao_social: 'Maria Souza', cnpj: 'Marketing', facade_name: 8500 },
+  { id: 3, razao_social: 'Carlos Santos', cnpj: 'Vendas', facade_name: 9800 },
+  { id: 4, razao_social: 'Ana Costa', cnpj: 'RH', facade_name: 7200 },
+  { id: 5, razao_social: 'Pedro Martins', cnpj: 'Engenharia', facade_name: 13500 },
+];
 
-function createData(id: number): Data {
-  return {
-    id,
-    firstName: chance.first(),
-    lastName: chance.last(),
-    age: chance.age(),
-    phone: chance.phone(),
-    state: chance.state({ full: true }),
-  };
-}
-
-const columns: ColumnData[] = [
+const employeeColumns: ColumnData[] = [
   {
-    width: 100,
-    label: 'First Name',
-    dataKey: 'firstName',
+    width: 200,
+    label: 'Razão Social',
+    dataKey: 'razao_social',
   },
   {
     width: 100,
-    label: 'Last Name',
-    dataKey: 'lastName',
+    label: 'CNPJ',
+    dataKey: 'cnpj',
   },
   {
-    width: 50,
-    label: 'Age',
-    dataKey: 'age',
+    width: 150,
+    label: 'Nome da Fachada',
+    dataKey: 'facade_name',
     numeric: true,
-  },
-  {
-    width: 110,
-    label: 'State',
-    dataKey: 'state',
-  },
-  {
-    width: 130,
-    label: 'Phone Number',
-    dataKey: 'phone',
   },
 ];
 
-const rows: Data[] = Array.from({ length: 200 }, (_, index) => createData(index));
-
-const VirtuosoTableComponents: TableComponents<Data> = {
-  Scroller: React.forwardRef<HTMLDivElement>((props, ref) => (
-    <TableContainer component={Paper} {...props} ref={ref} />
-  )),
-  Table: (props) => (
-    <Table {...props} sx={{ borderCollapse: 'separate', tableLayout: 'fixed' }} />
-  ),
-  TableHead: React.forwardRef<HTMLTableSectionElement>((props, ref) => (
-    <TableHead {...props} ref={ref} />
-  )),
-  TableRow,
-  TableBody: React.forwardRef<HTMLTableSectionElement>((props, ref) => (
-    <TableBody {...props} ref={ref} />
-  )),
-};
-
-function fixedHeaderContent() {
-  return (
-    <TableRow>
-      {columns.map((column) => (
-        <TableCell
-          key={column.dataKey}
-          variant="head"
-          align={column.numeric || false ? 'right' : 'left'}
-          style={{ width: column.width }}
-          sx={{ backgroundColor: 'background.paper' }}
-        >
-          {column.label}
-        </TableCell>
-      ))}
-    </TableRow>
-  );
+// O componente TableComponent refatorado para ser genérico
+interface TableComponentProps {
+    data: GenericData[];
+    columns: ColumnData[];
 }
 
-function rowContent(_index: number, row: Data) {
-  return (
-    <React.Fragment>
-      {columns.map((column) => (
-        <TableCell
-          key={column.dataKey}
-          align={column.numeric || false ? 'right' : 'left'}
-        >
-          {row[column.dataKey]}
-        </TableCell>
-      ))}
-    </React.Fragment>
-  );
-}
-
-export default function TableComponent() {
+export default function TableComponent({ data, columns }: TableComponentProps) {
   return (
     <Paper style={{ height: 400, width: '100%' }}>
-      <TableVirtuoso
-        data={rows}
-        components={VirtuosoTableComponents}
-        fixedHeaderContent={fixedHeaderContent}
-        itemContent={rowContent}
-      />
+      <TableContainer style={{ maxHeight: 400 }}>
+        <Table aria-label="sticky table">
+          <TableHead sx={{backgroundColor: "#60dbd14d"}}>
+            <TableRow>
+              {columns.map((column) => (
+                <TableCell
+                  key={column.dataKey}
+                  align={column.numeric || false ? 'right' : 'left'}
+                  style={{ minWidth: column.width }}
+                >
+                  {column.label}
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data.map((row) => (
+              <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+                {columns.map((column) => {
+                  const value = row[column.dataKey];
+                  return (
+                    <TableCell key={column.dataKey} align={column.numeric || false ? 'right' : 'left'}>
+                      {value}
+                    </TableCell>
+                  );
+                })}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </Paper>
   );
+}
+
+// Exemplo de como usar a tabela genérica
+export function ExampleTableUsage() {
+    return (
+        <div style={{ padding: '20px' }}>
+            <Typography variant="h5" gutterBottom>Tabela de Funcionários</Typography>
+            <TableComponent data={employees} columns={employeeColumns} />
+        </div>
+    );
 }

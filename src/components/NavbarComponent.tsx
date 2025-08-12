@@ -197,13 +197,24 @@ function ClientTabs() {
     return (
         <Box sx={{ flexGrow: 0, backgroundColor: '#c9c9c9ff' }}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider', backgroundColor: '#FFFFFF' }}>
-                <Tabs value={subValue} onChange={handleSubChange} aria-label="sub tabs example">
+                <Tabs value={subValue} onChange={handleSubChange} aria-label="sub tabs example" sx={{
+                    '.MuiTabs-indicator': {
+                        backgroundColor: '#000000ff',
+                    },
+                    '.MuiTab-root': {
+                        color: 'gray',
+                        '&.Mui-selected': {
+                            color: '#000000ff',
+                            fontWeight: 'bold'
+                        },
+                    }
+                }}>
                     <Tab label="Dados Básicos" {...a11yProps(0)} />
                     <Tab label="Dados Adicionais" {...a11yProps(1)} disabled />
                 </Tabs>
             </Box>
             <CustomTabPanel value={subValue} index={0}>
-                <Outlet />               
+                <Outlet />
             </CustomTabPanel>
             <CustomTabPanel value={subValue} index={1}>
                 <Typography variant="h6">Conteúdo da aba: Dados Adicionais</Typography>
@@ -246,7 +257,18 @@ export default function NavbarComponent() {
                         />
                         {/* Abas principais dentro da Toolbar */}
                         <Box sx={{ borderBottom: 0, borderColor: 'divider', flexGrow: 30 }}>
-                            <Tabs value={value} onChange={handleChange} aria-label="main tabs example">
+                            <Tabs value={value} onChange={handleChange} aria-label="main tabs example" sx={{
+                                '.MuiTabs-indicator': {
+                                    backgroundColor: '#FFFFFF', // Cor do indicador
+                                },
+                                '.MuiTab-root': {
+                                    color: 'gray', // Cor padrão do texto
+                                    '&.Mui-selected': {
+                                        color: '#ffffffff',
+                                        fontWeight: 'bold'
+                                    },
+                                }
+                            }}>
                                 <Tab label="Clientes" {...a11yProps(0)} />
                                 {/* <Tab label="Configurações" {...a11yProps(1)} /> */}
                             </Tabs>
@@ -277,7 +299,7 @@ export default function NavbarComponent() {
             </AppBar>
 
             {/* Conteúdo que será exibido em cada aba principal */}
-            <CustomTabPanel value={value} index={0}>                
+            <CustomTabPanel value={value} index={0}>
                 <ClientTabs />
             </CustomTabPanel>
             <CustomTabPanel value={value} index={1}>

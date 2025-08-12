@@ -19,6 +19,60 @@ interface CardComponentProps {
     actions?: React.ReactNode;
 }
 
+interface GenericData {
+  [key: string]: any;
+}
+
+interface ColumnData {
+  dataKey: string;
+  label: string;
+  numeric?: boolean;
+  width?: number;
+}
+
+// Dados de exemplo para a tabela
+const employees = [
+  { id: 1, company_name: 'João Silva', cnpj: 'Engenharia', facade_name: 12000, tags: '', status: 'inativo', conecta_plus: 'Não' },
+  { id: 2, company_name: 'Maria Souza', cnpj: 'Marketing', facade_name: 8500, tags: '', status: 'inativo', conecta_plus: 'Não' },
+  { id: 3, company_name: 'Carlos Santos', cnpj: 'Vendas', facade_name: 9800, tags: '', status: 'inativo', conecta_plus: 'Não' },
+  { id: 4, company_name: 'Ana Costa', cnpj: 'RH', facade_name: 7200, tags: '', status: 'inativo', conecta_plus: 'Não' },
+  { id: 5, company_name: 'Pedro Martins', cnpj: 'Engenharia', facade_name: 13500, tags: '', status: 'inativo', conecta_plus: 'Não' },
+];
+
+const employeeColumns: ColumnData[] = [
+  {
+    width: 200,
+    label: 'Razão Social',
+    dataKey: 'company_name',
+  },
+  {
+    width: 100,
+    label: 'CNPJ',
+    dataKey: 'cnpj',
+  },
+  {
+    width: 150,
+    label: 'Nome da Fachada',
+    dataKey: 'facade_name',
+  },
+  {
+    width: 100,
+    label: 'Tags',
+    dataKey: 'tags',
+  },
+  {
+    width: 100,
+    label: 'Status',
+    dataKey: 'status',
+  },
+  {
+    width: 150,
+    label: 'Conecta Plus',
+    dataKey: 'conecta_plus',
+    numeric: true,
+  },
+];
+
 // 2. Componente refatorado para ser genérico, recebendo as props
 function CardComponent({ title, subheader, word, wordType, description, actions }: CardComponentProps) {
 
@@ -66,12 +120,8 @@ export default function Home() {
                 actions={<Button size="small">Ação</Button>}
             />
             <CardComponent
-                subheader="Selecione um usuário para ver mais detalhes"
-                title="Clientes"
-                word={<TableComponent />}
-                wordType="Variação"
-                description='Você pode passar qualquer conteúdo que precisar aqui.'
-                actions={<Button size="small">Outra Ação</Button>}
+                subheader="Clientes"
+                word={<TableComponent data={employees} columns={employeeColumns} />}
             />
         </div>
     )
