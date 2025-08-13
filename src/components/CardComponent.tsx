@@ -11,14 +11,15 @@ import Typography from '@mui/material/Typography';
 interface CardComponentProps {
     title?: string;
     subheader?: string;
-    word?: string;
+    botao?: any;
+    word?: string | React.ReactElement;
     wordType?: string;
     description?: string;
     actions?: React.ReactNode;
 }
 
 // 2. Componente refatorado para ser genérico, recebendo as props
-function CardComponent({ title, subheader, word, wordType, description, actions }: CardComponentProps) {
+export default function CardComponent({ title, subheader, botao, word, wordType, description, actions }: CardComponentProps) {
 
     // A lógica para o bullet point pode ser mantida aqui
     const bull = (
@@ -34,8 +35,14 @@ function CardComponent({ title, subheader, word, wordType, description, actions 
     return (
         <Card sx={{ minWidth: 275 }}>
             <CardContent>
-                <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
+                <Typography gutterBottom sx={{ color: 'text.black', fontSize: 20, fontWeight: 'bold', textAlign: 'left' }}>
+                    {title}
+                </Typography>
+                <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14, textAlign: 'left' }}>
                     {subheader}
+                </Typography>
+                <Typography gutterBottom sx={{ color: 'text.secondary', textAlign: 'right' }}>
+                    {botao}
                 </Typography>
                 <Typography variant="h5" component="div">
                     {word}
@@ -51,7 +58,7 @@ function CardComponent({ title, subheader, word, wordType, description, actions 
 }
 
 // 4. Exemplo de como usar o componente reutilizável em um App
-export default function App() {
+function App() {
     return (
         <div style={{ padding: '20px', display: 'flex', gap: '20px' }}>
             {/* Exemplo 1: O card original, mas usando props */}

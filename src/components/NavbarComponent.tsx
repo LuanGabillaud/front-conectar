@@ -195,7 +195,7 @@ function ClientTabs() {
     };
 
     return (
-        <Box sx={{ flexGrow: 0, backgroundColor: '#c9c9c9ff' }}>
+        <Box sx={{ flexGrow: 0, backgroundColor: '#dddcdcff', margin: -3 }}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider', backgroundColor: '#FFFFFF' }}>
                 <Tabs value={subValue} onChange={handleSubChange} aria-label="sub tabs example" sx={{
                     '.MuiTabs-indicator': {
