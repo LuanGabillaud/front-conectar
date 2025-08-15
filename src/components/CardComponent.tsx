@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 // 1. Interface de props para o componente, definindo os tipos de dados esperados
 interface CardComponentProps {
     title?: string;
-    subheader?: string;
+    subheader?: string | React.ReactElement;
     botao?: any;
     word?: string | React.ReactElement;
     wordType?: string;

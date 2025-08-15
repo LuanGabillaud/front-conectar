@@ -74,9 +74,8 @@ const employeeColumns: ColumnData[] = [
 export default function Home() {
     return (
         <div style={{ padding: '10px', display: 'flex', gap: '20px', flexDirection: 'column' }}>
-            {/* Exemplo de uso do CardComponent dentro do seu componente Home */}
             <CardComponent
-                word={<FiltroComponent />}
+                subheader={<FiltroComponent />}
             />
             <CardComponent
                 title="Clientes"
